@@ -1,4 +1,6 @@
-#This can all be run from the REPL
+#This can all be run from the REPL, in the base package directory
+using Pkg
+Pkg.activate(".")
 using CSV, DataFrames, StatsBase, Statistics, Dates, Flux
 
 #If you're running this on an NVIDIA GPU:
