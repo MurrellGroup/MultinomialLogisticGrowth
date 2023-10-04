@@ -1,0 +1,48 @@
+{
+  "comment": "Update to include lineage BA.2.86",
+  "compatibility": {
+    "nextcladeCli": {
+      "max": null,
+      "min": "1.10.0"
+    },
+    "nextcladeWeb": {
+      "max": null,
+      "min": "1.13.0"
+    }
+  },
+  "defaultGene": "S",
+  "defaultRef": "BA.2",
+  "enabled": true,
+  "files": {
+    "geneMap": "genemap.gff",
+    "primers": "primers.csv",
+    "qc": "qc.json",
+    "reference": "reference.fasta",
+    "sequences": "sequences.fasta",
+    "tree": "tree.json",
+    "virusPropertiesJson": "virus_properties.json"
+  },
+  "geneOrderPreference": [
+    "S",
+    "ORF1a",
+    "ORF1b",
+    "ORF3a",
+    "ORF6",
+    "ORF7a",
+    "ORF7b",
+    "ORF8",
+    "ORF9b",
+    "E",
+    "M",
+    "N"
+  ],
+  "metadata": {},
+  "name": "sars-cov-2-21L",
+  "nameFriendly": "SARS-CoV-2 relative to BA.2",
+  "reference": {
+    "accession": "BA.2",
+    "source": "genbank",
+    "strainName": "BA.2"
+  },
+  "tag": "2023-09-21T12:00:00Z"
+}

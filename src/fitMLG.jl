@@ -12,7 +12,7 @@ device = gpu
 #device = cpu
 ########################################
 
-count_path = "data/2023-09-09_tall_counts.csv"
+count_path = "data/2023-10-02_tall_counts.csv"
 count_df = DataFrame(CSV.File(count_path))
 
 lineages = sort(union(count_df.lineage))
@@ -102,7 +102,7 @@ plotpath = "plots"
 mkpath(plotpath)
 model, days, count_tensor = (model, days, count_tensor) |> cpu
 mod_fit = softmax(model(days), dims = 1)
-freq_tensor = count_tensor ./ sum(count_tensor, dims = 1)
+freq_tensor = count_tensor ./ sum(count_tensor, dims = 1) #This is meant to have a lot of NaNs - don't panic
 
 ENV["GKSwstype"] = "100" #Let the plot run without an X server
 

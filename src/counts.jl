@@ -9,10 +9,10 @@ function inlier_indices(d; cutoff = 3.5)
 end
 
 #Paths and CSV import
-latest_GISAID_date = "2023-09-09"
-linage_count_filepath = "/Users/benmurrell/Unsynced/Nextclade/nextclade_outputs/lineage_counts/2023_09_09.csv"
-export_filepath = "/Users/benmurrell/Unsynced/Nextclade/nextclade_outputs/lineage_counts/2023_09_09_tall_counts.csv"
-data = DataFrame(CSV.File(linage_count_filepath, types = Dict(:date => String, :deposited_date => String)))
+latest_GISAID_date = "2023-10-02"
+linage_assignment_filepath = "data/2023-10-02_minimal.csv"
+export_filepath = "data/2023-10-02_tall_counts.csv"
+data = DataFrame(CSV.File(linage_assignment_filepath, types = Dict(:date => String, :deposited_date => String)))
 @show countmap(data.qc_status)
 
 #Options
@@ -38,9 +38,11 @@ data_pass.date = Date.(data_pass.date, dateformat"y-m-d")
 data_pass.deposited_date = Date.(data_pass.deposited_date, dateformat"y-m-d")
 
 #Viz the deposition delay...
-pl = histogram([d.value for d in data_pass.deposited_date .- data_pass.date])
-plot!([deposition_delay_cutoff,deposition_delay_cutoff],[0,10^5], color = "red", label = "Cutoff")
-savefig("deposition_delay_histogram.pdf", pl)
+ENV["GKSwstype"] = "100" #Let the plot run without an X server
+mkpath("plots")
+pl = histogram([d.value for d in data_pass.deposited_date .- data_pass.date], label = "Frequency", xlabel = "Deposition delay")
+plot!([deposition_delay_cutoff,deposition_delay_cutoff],[0,10^5], color = "red", label = "Cutoff", margin = 1Plots.cm)
+savefig(pl, "plots/deposition_delay_histogram.svg")
 
 #And retain only wihin threshold
 deposited_within_thresh = [d.value <= deposition_delay_cutoff for d in data_pass.deposited_date .- data_pass.date]
@@ -73,4 +75,5 @@ data_pass = data_pass[[lineage_counts[c]>lineage_count_thresh for c in data_pass
 
 #Collapsing counts, and exporting
 count_df = sort(combine(groupby(data_pass, [:date, :country, :lineage]), nrow => :count))
-CSV.write(joinpath(linage_count_path,"$(latest_GISAID_date)_tall_counts.csv"), count_df)
+CSV.write(export_filepath, count_df)
+
